@@ -1,0 +1,23 @@
+{
+  "name": "robinhood",
+  "version": "0.0.1",
+  "description": "A node package for making API calls to Robinhood",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lacunadream/robinhood-node.git"
+  },
+  "keywords": [
+    "robinhood",
+    "API"
+  ],
+  "author": "lacunadream",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lacunadream/robinhood-node/issues"
+  },
+  "homepage": "https://github.com/lacunadream/robinhood-node#readme"
+}
