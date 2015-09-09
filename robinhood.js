@@ -49,12 +49,12 @@ function Robinhood() {
         "Connection": "keep-alive",
         "User-Agent": "Robinhood/823 (iPhone; iOS 7.1.2; Scale/2.00)"
 	};
-	//header["Authorization"] = 'Token ' + '1395cdb3c08f84b0cbb5f683ab959794e791068c'
+	
 	header['Authorization'] = 'Token ' + login(username, password);	
 	
 	
 	function login(username, password) {
-		data = "?username=" + username + "&password=" + password;
+		// data = "?username=" + username + "&password=" + password;
 		var options = {
 			url: endpoints.login, 
 			headers: header,
@@ -67,7 +67,9 @@ function Robinhood() {
 				zzz = JSON.parse(response.body)
 				//console.log(typeof(zz2))
 				console.log(zzz["token"])
+				console.log(options)
 				return zzz["token"]
+
 			} else {
 				// console.log(response);
 				console.log(error);
@@ -115,11 +117,34 @@ Robinhood.prototype.get_quote = function(symbol) {
 			console.log('error')
 			console.log(response.text);
 		} else {
-			console.log('error')
-			console.log(response);
-			console.log(response.statusCode);
-			console.log(options)
+			parse = JSON.parse(response.body)
+			// console.log(parse.results);
+			// console.log(typeof(parse.results))
+			// console.log(response.statusCode);
+			// console.log(options)
+			return parse.results
 		}
+	})
+}
+
+Robinhood.prototype.order_details = function(order_ID) {
+	var options = {
+		url: endpoints.orders + order_ID + "/",
+		headers: header,
+		method: 'get'
+	};
+	request(options, function(error, response) {
+		if (response.statusCode == 200) {
+			
+			//console.log(response.statusCode)
+			parsed = JSON.parse(response.body)
+			//console.log(parse)
+			return 'parsed'
+		} else {
+			console.log('Order details encountered an error' + response.text)
+			console.log(response.statusCode)
+		}
+
 	})
 }
 
@@ -145,5 +170,4 @@ Robinhood.prototype.get_quote = function(symbol) {
 // Robinhood.endpoints.login = 'https://api.robinhood.com/api-token-auth/';
 // Robinhood.endpoints.quotes = 'https://api.robinhood.com/quotes/';
 // Robinhood.endpoints.orders = 'https://api.robinhood.com/orders/';
-
 
