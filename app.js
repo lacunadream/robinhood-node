@@ -1,13 +1,13 @@
 // Modules
-
+var promise = require('blackbird');
+var fs = require('fs');
 
 // Import
-var api = require('./robinhood');
+var Robinhood = require('./robinhood2');
 
 // Sample API call
-var r = new api;
-console.log(r.login)
-//console.log(r.get_quote('GPRO'))
-//r.order_details('e9df73d1-e078-4dff-9b83-30f8aac2df8c')
+Robinhood()
+// Robinhood.get_quote('AAPL')
+// Robinhood.order_details('')
 
 

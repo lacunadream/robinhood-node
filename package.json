@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/lacunadream/robinhood-node/issues"
   },
-  "homepage": "https://github.com/lacunadream/robinhood-node#readme"
+  "homepage": "https://github.com/lacunadream/robinhood-node#readme",
+  "dependencies": {
+    "blackbird": "0.0.3"
+  }
 }

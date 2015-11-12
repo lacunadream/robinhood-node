@@ -16,34 +16,35 @@ exports = module.exports = Robinhood;
 	};
 
 
-	var endpoints = {
-	    "accounts": "https://api.robinhood.com/accounts",
-	    "ach_deposit_schedules": "https://api.robinhood.com/ach/deposit_schedules/",
-	    "ach_iav_auth": "https://api.robinhood.com/ach/iav/auth/",
-	    "ach_relationships": "https://api.robinhood.com/ach/relationships/",
-	    "ach_transfers": "https://api.robinhood.com/ach/transfers/",
-	    "applications": "https://api.robinhood.com/applications/",
-	    "dividends": "https://api.robinhood.com/dividends/",
-	    "document_requests": "https://api.robinhood.com/upload/document_requests/",
-	    "edocuments": "https://api.robinhood.com/documents/",
-	    "instruments": "https://api.robinhood.com/instruments/",
-	    "login": "https://api.robinhood.com/api-token-auth/",
-	    "margin_upgrades": "https://api.robinhood.com/margin/upgrades/",
-	    "markets": "https://api.robinhood.com/markets/",
-	    "notifications": "https://api.robinhood.com/notifications/",
-	    "notifications/devices": "https://api.robinhood.com/notifications/devices/",
-	    "orders": "https://api.robinhood.com/orders/",
-	    "password_reset": "https://api.robinhood.com/password_reset/request/",
-	    "quotes": "https://api.robinhood.com/quotes/",
-	    "user": "https://api.robinhood.com/user/",
-	    "user/additional_info": "https://api.robinhood.com/user/additional_info/",
-	    "user/basic_info": "https://api.robinhood.com/user/basic_info/",
-	    "user/employment": "https://api.robinhood.com/user/employment/",
-	    "user/investment_profile": "https://api.robinhood.com/user/investment_profile/",
-	    "watchlists": "https://api.robinhood.com/watchlists/"
+function Robinhood() {
+	// endpoints
+	endpoints = {
+    "accounts": "https://api.robinhood.com/accounts",
+    "ach_deposit_schedules": "https://api.robinhood.com/ach/deposit_schedules/",
+    "ach_iav_auth": "https://api.robinhood.com/ach/iav/auth/",
+    "ach_relationships": "https://api.robinhood.com/ach/relationships/",
+    "ach_transfers": "https://api.robinhood.com/ach/transfers/",
+    "applications": "https://api.robinhood.com/applications/",
+    "dividends": "https://api.robinhood.com/dividends/",
+    "document_requests": "https://api.robinhood.com/upload/document_requests/",
+    "edocuments": "https://api.robinhood.com/documents/",
+    "instruments": "https://api.robinhood.com/instruments/",
+    "login": "https://api.robinhood.com/api-token-auth/",
+    "margin_upgrades": "https://api.robinhood.com/margin/upgrades/",
+    "markets": "https://api.robinhood.com/markets/",
+    "notifications": "https://api.robinhood.com/notifications/",
+    "notifications/devices": "https://api.robinhood.com/notifications/devices/",
+    "orders": "https://api.robinhood.com/orders/",
+    "password_reset": "https://api.robinhood.com/password_reset/request/",
+    "quotes": "https://api.robinhood.com/quotes/",
+    "user": "https://api.robinhood.com/user/",
+    "user/additional_info": "https://api.robinhood.com/user/additional_info/",
+    "user/basic_info": "https://api.robinhood.com/user/basic_info/",
+    "user/employment": "https://api.robinhood.com/user/employment/",
+    "user/investment_profile": "https://api.robinhood.com/user/investment_profile/",
+    "watchlists": "https://api.robinhood.com/watchlists/"
     };
 
-function Robinhood() {
 	var keyarray = fs.readFileSync(__dirname + '/auth.txt').toString().split(',');
 	var username = keyarray[0];
 	console.log(username)	
@@ -51,8 +52,12 @@ function Robinhood() {
 	console.log(password)
 
 	login(username, password)
+
+	//header['Authorization'] = 'Token ' + login(username, password);	
 	
-function login(username, password) {
+
+
+	function login(username, password) {
 		// var deferred = Q.defer();
 		var x = "";
 		var options = {
@@ -75,7 +80,26 @@ function login(username, password) {
 				record(x)
 			}
 		}
-		request(options,handleReq) 		 	
+/*		request(options, function(error, response) {
+			if(response) {
+				zzz = JSON.parse(response.body)
+			}
+				x = zzz["token"]
+				console.log(typeof(x))
+				console.log(x)
+				console.log(options)
+				return x
+				//deferred.resolve(text);
+
+			} else {
+				// console.log(response);
+				console.log(error);
+				//deferred.reject(new Error(error));
+		});*/
+		request(options,handleReq) 
+
+		
+		 	
 	};
 
 	// this.get_quote = function(symbol) {
@@ -105,7 +129,7 @@ function login(username, password) {
 
 }
 
-exports.get_quote = function(symbol) {
+Robinhood.prototype.get_quote = function(symbol) {
 	data = "?symbols=" + symbol;
 
 	var options = {
@@ -119,19 +143,18 @@ exports.get_quote = function(symbol) {
 			console.log(response.text);
 			
 		} else {
-			// parse = JSON.parse(response.body)
-			// console.log(parse.results);
-			// console.log(typeof(parse.results))
-			// console.log(response.statusCode);
-			// console.log(options)
-			// return parse.results
-			console.log(response.body)
+			parse = JSON.parse(response.body)
+			console.log(parse.results);
+			console.log(typeof(parse.results))
+			console.log(response.statusCode);
+			console.log(options)
+			return parse.results
 
 		}
 	})
 }
 
-exports.order_details = function(order_ID) {
+Robinhood.prototype.order_details = function(order_ID) {
 	var options = {
 		url: endpoints.orders + order_ID + "/",
 		headers: header,
@@ -145,10 +168,8 @@ exports.order_details = function(order_ID) {
 			console.log(parsed)
 			return 'parsed'
 		} else {
-			console.log('Order details encountered an error' + response)
+			console.log('Order details encountered an error' + response.text)
 			console.log(response.statusCode)
-			what = JSON.stringify(response)
-			console.log(what)
 		}
 
 	})
@@ -167,6 +188,8 @@ exports.order_details = function(order_ID) {
 
 
 
+// var rh = new Robinhood;
+// rh.whatever
 
 // Robinhood.endpoints = {};
 // Robinhood.endpoints['accounts'] = 'https://api.robinhood.com/accounts';
