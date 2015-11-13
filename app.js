@@ -1,5 +1,5 @@
 // Modules
-var promise = require('blackbird');
+var Promise = require('blackbird');
 var fs = require('fs');
 
 // Import
